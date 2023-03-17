@@ -1,9 +1,6 @@
 package br.com.fpnbr.springbootmvc.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +20,5 @@ public class Pessoa implements Serializable {
     private Long id;
     private String nome;
     private String sobrenome;
+    private int idade;
 }
