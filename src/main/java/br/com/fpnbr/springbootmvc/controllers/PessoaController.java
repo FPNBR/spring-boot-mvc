@@ -61,4 +61,13 @@ public class PessoaController {
 
         return modelAndView;
     }
+
+    @PostMapping("/buscar-pessoa-nome")
+    public ModelAndView buscarPessoaNome(@RequestParam("buscarPessoaNome") String buscarPessoaNome) {
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
+        modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(buscarPessoaNome));
+        modelAndView.addObject("pessoa", new Pessoa());
+
+        return modelAndView;
+    }
 }
