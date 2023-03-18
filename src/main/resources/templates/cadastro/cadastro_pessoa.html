@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="http://localhost:8080">Página principal</a>
+                    <a class="nav-link active" aria-current="page" href="/">Página principal</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,21 +35,26 @@
 </nav>
 
 <div class="container mx-auto">
-    <form action="/salvar-pessoa" method="post">
+    <form action="/salvar-pessoa" method="post" th:object="${pessoa}">
+        <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input name="id" class="form-control" id="id" th:field="*{id}" readonly>
+        </div>
         <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input name="nome" class="form-control" id="nome" placeholder="Digite seu nome">
+            <input name="nome" class="form-control" id="nome" th:field="*{nome}" placeholder="Digite seu nome">
         </div>
         <div class="mb-3">
             <label for="sobrenome" class="form-label">Sobrenome</label>
-            <input name="sobrenome" class="form-control" id="sobrenome" placeholder="Digite seu sobrenome">
+            <input name="sobrenome" class="form-control" id="sobrenome" th:field="*{sobrenome}" placeholder="Digite seu sobrenome">
         </div>
         <div class="mb-3">
             <label for="idade" class="form-label">Idade</label>
-            <input name="idade" class="form-control" id="idade">
+            <input name="idade" class="form-control" id="idade" th:field="*{idade}">
         </div>
         <input type="submit" class="btn btn-success" value="Salvar">
     </form>
+    <a href="/listar-pessoas">Listar Pessoas</a>
 
     <table class="table">
         <thead>
@@ -66,6 +71,7 @@
             <td th:text="${pessoa.nome}"></td>
             <td th:text="${pessoa.sobrenome}"></td>
             <td th:text="${pessoa.idade}"></td>
+            <td><a th:href="@{/editar-pessoa/{idPessoa}(idPessoa=${pessoa.id})}">Editar</a></td>
         </tr>
         </tbody>
     </table>
