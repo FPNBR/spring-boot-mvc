@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +23,7 @@ public class Pessoa implements Serializable {
     private String nome;
     private String sobrenome;
     private int idade;
+
+    @OneToMany(mappedBy = "pessoa")
+    private List<Telefone> telefoneList;
 }
