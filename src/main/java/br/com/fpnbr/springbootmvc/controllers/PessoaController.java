@@ -1,7 +1,9 @@
 package br.com.fpnbr.springbootmvc.controllers;
 
 import br.com.fpnbr.springbootmvc.models.Pessoa;
+import br.com.fpnbr.springbootmvc.models.Telefone;
 import br.com.fpnbr.springbootmvc.repositories.PessoaRepository;
+import br.com.fpnbr.springbootmvc.repositories.TelefoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class PessoaController {
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private TelefoneRepository telefoneRepository;
 
     @GetMapping( "/cadastro-pessoa")
     public ModelAndView inicio() {
@@ -45,18 +50,18 @@ public class PessoaController {
         return modelAndView;
     }
 
-    @GetMapping("/editar-pessoa/{idPessoa}")
-    public ModelAndView editarPessoa(@PathVariable("idPessoa") Long idPessoa) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(idPessoa);
+    @GetMapping("/editar-pessoa/{pessoaId}")
+    public ModelAndView editarPessoa(@PathVariable("pessoaId") Long pessoaId) {
+        Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
         modelAndView.addObject("pessoa", pessoa.get());
 
         return modelAndView;
     }
 
-    @GetMapping("/excluir-pessoa/{idPessoa}")
-    public ModelAndView excluirPessoa(@PathVariable("idPessoa") Long idPessoa) {
-        pessoaRepository.deleteById(idPessoa);
+    @GetMapping("/excluir-pessoa/{pessoaId}")
+    public ModelAndView excluirPessoa(@PathVariable("pessoaId") Long pessoaId) {
+        pessoaRepository.deleteById(pessoaId);
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
         modelAndView.addObject("pessoa", new Pessoa());
         modelAndView.addObject("pessoas", pessoaRepository.findAll());
@@ -73,11 +78,22 @@ public class PessoaController {
         return modelAndView;
     }
 
-    @GetMapping("/telefone-pessoa/{idPessoa}")
-    public ModelAndView telefonesPessoa(@PathVariable("idPessoa") Long idPessoa) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(idPessoa);
+    @GetMapping("/telefone-pessoa/{pessoaId}")
+    public ModelAndView telefonesPessoa(@PathVariable("pessoaId") Long pessoaId) {
+        Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
         ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
         modelAndView.addObject("pessoa", pessoa.get());
+
+        return modelAndView;
+    }
+
+    @PostMapping("/adicionar-telefone-pessoa/{pessoaId}")
+    public ModelAndView adicionarTelefonePessoa(Telefone telefone, @PathVariable("pessoaId") Long pessoaId) {
+        Pessoa pessoa = pessoaRepository.findById(pessoaId).get();
+        telefone.setPessoa(pessoa);
+        telefoneRepository.save(telefone);
+        ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
+        modelAndView.addObject("pessoa", pessoa);
 
         return modelAndView;
     }

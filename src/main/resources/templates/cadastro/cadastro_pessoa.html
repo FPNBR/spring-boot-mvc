@@ -60,11 +60,11 @@
             <tbody>
             <tr th:each="pessoa : ${pessoas}">
                 <td class="text-center" th:text="${pessoa.id}"></td>
-                <td class="text-center"><a th:href="@{/telefone-pessoa/{idPessoa}(idPessoa=${pessoa.id})}"><span th:text="${pessoa.nome}"></span></a></td>
+                <td class="text-center"><a th:href="@{/telefone-pessoa/{pessoaId}(pessoaId=${pessoa.id})}"><span th:text="${pessoa.nome}"></span></a></td>
                 <td class="text-center" th:text="${pessoa.sobrenome}"></td>
                 <td class="text-center" th:text="${pessoa.idade}"></td>
-                <td class="text-center"><a class="btn btn-primary" th:href="@{/editar-pessoa/{idPessoa}(idPessoa=${pessoa.id})}">Editar</a></td>
-                <td class="text-center"><a class="btn btn-danger" th:href="@{/excluir-pessoa/{idPessoa}(idPessoa=${pessoa.id})}">Excluir</a></td>
+                <td class="text-center"><a class="btn btn-primary" th:href="@{/editar-pessoa/{pessoaId}(pessoaId=${pessoa.id})}">Editar</a></td>
+                <td class="text-center"><a class="btn btn-danger" th:href="@{/excluir-pessoa/{pessoaId}(pessoaId=${pessoa.id})}">Excluir</a></td>
             </tr>
             </tbody>
         </table>
