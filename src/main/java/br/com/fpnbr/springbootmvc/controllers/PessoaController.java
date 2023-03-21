@@ -4,11 +4,16 @@ import br.com.fpnbr.springbootmvc.models.Pessoa;
 import br.com.fpnbr.springbootmvc.models.Telefone;
 import br.com.fpnbr.springbootmvc.repositories.PessoaRepository;
 import br.com.fpnbr.springbootmvc.repositories.TelefoneRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,14 +35,31 @@ public class PessoaController {
     }
 
     @PostMapping("/salvar-pessoa")
-    public ModelAndView salvarPessoa(Pessoa pessoa) {
-        pessoaRepository.save(pessoa);
-        ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
-        Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoaIterable);
-        modelAndView.addObject("pessoa", new Pessoa());
+    public ModelAndView salvarPessoa(@Valid Pessoa pessoa, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
+            Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
+            modelAndView.addObject("pessoas", pessoaIterable);
+            modelAndView.addObject("pessoa", pessoa);
 
-        return modelAndView;
+            List<String> messageErrors = new ArrayList<>();
+
+            for (ObjectError objectError : bindingResult.getAllErrors()) {
+                messageErrors.add(objectError.getDefaultMessage()); // Vem das annotations @NotEmpty e @NotNull
+            }
+
+            modelAndView.addObject("messageErrors", messageErrors);
+            return modelAndView;
+
+        }else {
+            pessoaRepository.save(pessoa);
+            ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
+            Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
+            modelAndView.addObject("pessoas", pessoaIterable);
+            modelAndView.addObject("pessoa", new Pessoa());
+
+            return modelAndView;
+        }
     }
 
     @GetMapping( "/listar-pessoas")

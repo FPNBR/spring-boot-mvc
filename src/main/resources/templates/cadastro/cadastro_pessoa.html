@@ -9,21 +9,25 @@
 <div th:replace="~{navbar}"></div>
 
 <div class="container mx-auto">
+    <div class="alert alert-danger d-inline-block" role="alert" th:each="messageError : ${messageErrors}">
+        <span class="error-message" th:text="${messageError}"></span>
+    </div>
+
     <form action="/salvar-pessoa" id="formPessoa" method="post" th:object="${pessoa}">
         <div class="row mb-3">
             <div class="col">
                 <label for="nome" class="form-label">Nome</label>
-                <input name="nome" class="form-control" id="nome" th:field="*{nome}" placeholder="Digite seu nome">
+                <input name="nome" class="form-control" id="nome" placeholder="Digite seu nome" required th:field="*{nome}">
             </div>
             <div class="col">
                 <label for="sobrenome" class="form-label">Sobrenome</label>
-                <input name="sobrenome" class="form-control" id="sobrenome" th:field="*{sobrenome}" placeholder="Digite seu sobrenome">
+                <input name="sobrenome" class="form-control" id="sobrenome" placeholder="Digite seu sobrenome" required th:field="*{sobrenome}">
             </div>
         </div>
         <div class="row mb-3">
             <div class="col">
                 <label for="idade" class="form-label">Idade</label>
-                <input name="idade" class="form-control" id="idade" th:field="*{idade}">
+                <input name="idade" class="form-control" id="idade" type="number" min="0" required th:field="*{idade}">
             </div>
         </div>
         <div class="row mb-5">
@@ -64,7 +68,7 @@
                 <td class="text-center" th:text="${pessoa.sobrenome}"></td>
                 <td class="text-center" th:text="${pessoa.idade}"></td>
                 <td class="text-center"><a class="btn btn-primary" th:href="@{/editar-pessoa/{pessoaId}(pessoaId=${pessoa.id})}">Editar</a></td>
-                <td class="text-center"><a class="btn btn-danger" th:href="@{/excluir-pessoa/{pessoaId}(pessoaId=${pessoa.id})}">Excluir</a></td>
+                <td class="text-center"><a class="btn btn-danger" th:href="@{/excluir-pessoa/{pessoaId}(pessoaId=${pessoa.id})}" onclick="return confirm('Tem certeza que deseja excluir essa pessoa?')">Excluir</a></td>
             </tr>
             </tbody>
         </table>

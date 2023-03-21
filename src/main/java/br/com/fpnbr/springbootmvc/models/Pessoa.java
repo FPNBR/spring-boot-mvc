@@ -1,10 +1,10 @@
 package br.com.fpnbr.springbootmvc.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,8 +20,17 @@ public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
     private Long id;
+
+    @NotNull(message = "O nome não pode ser nulo!")
+    @NotEmpty(message = "O nome não pode estar vazio!")
     private String nome;
+
+    @NotNull(message = "O sobrenome não pode ser nulo!")
+    @NotEmpty(message = "O sobrenome não pode estar vazio!")
     private String sobrenome;
+
+    @NotNull(message = "A idade não pode ser nula!")
+    @Min(value = 18, message = "Você deve ter mais de 18 anos para se cadastrar!")
     private int idade;
 
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
