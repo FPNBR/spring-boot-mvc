@@ -113,13 +113,35 @@ public class PessoaController {
     @PostMapping("/adicionar-telefone-pessoa/{pessoaId}")
     public ModelAndView adicionarTelefonePessoa(Telefone telefone, @PathVariable("pessoaId") Long pessoaId) {
         Pessoa pessoa = pessoaRepository.findById(pessoaId).get();
-        telefone.setPessoa(pessoa);
-        telefoneRepository.save(telefone);
-        ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
-        modelAndView.addObject("pessoa", pessoa);
-        modelAndView.addObject("telefones", telefoneRepository.findTelefoneByPessoa(pessoaId));
 
-        return modelAndView;
+        if (telefone != null && telefone.getNumero().isEmpty() || telefone.getTipo().isEmpty()) {
+
+            ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
+            modelAndView.addObject("pessoa", pessoa);
+            modelAndView.addObject("telefones", telefoneRepository.findTelefoneByPessoa(pessoaId));
+
+            List<String> messageErrors = new ArrayList<>();
+
+            if (telefone.getNumero().isEmpty()) {
+                messageErrors.add("O número do telefone deve ser informado!");
+            }
+            if (telefone.getTipo().isEmpty()) {
+                messageErrors.add("O tipo do telefone deve ser informado!");
+            }
+
+            modelAndView.addObject("messageErrors", messageErrors);
+
+            return modelAndView;
+
+        } else {
+            telefone.setPessoa(pessoa);
+            telefoneRepository.save(telefone);
+            ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
+            modelAndView.addObject("pessoa", pessoa);
+            modelAndView.addObject("telefones", telefoneRepository.findTelefoneByPessoa(pessoaId));
+
+            return modelAndView;
+        }
     }
 
     @GetMapping("/excluir-telefone/{telefoneId}")
