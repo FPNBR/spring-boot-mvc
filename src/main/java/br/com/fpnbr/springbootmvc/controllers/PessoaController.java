@@ -82,6 +82,7 @@ public class PessoaController {
     public ModelAndView telefonesPessoa(@PathVariable("pessoaId") Long pessoaId) {
         Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
         ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
+        modelAndView.addObject("telefones", telefoneRepository.findTelefoneByPessoa(pessoaId));
         modelAndView.addObject("pessoa", pessoa.get());
 
         return modelAndView;
@@ -94,6 +95,7 @@ public class PessoaController {
         telefoneRepository.save(telefone);
         ModelAndView modelAndView = new ModelAndView("cadastro/telefone_pessoa");
         modelAndView.addObject("pessoa", pessoa);
+        modelAndView.addObject("telefones", telefoneRepository.findTelefoneByPessoa(pessoaId));
 
         return modelAndView;
     }
