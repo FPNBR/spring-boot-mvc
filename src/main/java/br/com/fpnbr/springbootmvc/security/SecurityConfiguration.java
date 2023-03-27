@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -25,18 +24,14 @@ public class SecurityConfiguration {
         http.csrf()
                 .disable() // Desativa as configurações padrões de memória
                 .authorizeHttpRequests() // Permitir/Restringir acessos
-                .requestMatchers(HttpMethod.GET, "/").permitAll() // Qualquer usuário acessa a página inicial
+                .requestMatchers(HttpMethod.GET, "/", "/static/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/cadastro-pessoa").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll() // Permite qualquer usuário
                 .and().logout() // Mapeia a URL de Logout e invalida o usuário autenticado
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/static/**");
     }
 
     @Bean
