@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "usuario_role")
+@Table(name = "usuario_role", uniqueConstraints = {@UniqueConstraint(columnNames = {"role_id", "usuario_id"})})
 @SequenceGenerator(name = "seq_usuario_role", sequenceName = "seq_usuario_role", allocationSize = 1, initialValue = 1)
 public class UsuarioRole {
 
