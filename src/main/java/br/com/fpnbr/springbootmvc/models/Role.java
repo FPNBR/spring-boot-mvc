@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.List;
+
+
+@Getter
+@Setter
 @Entity
 @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", allocationSize = 1, initialValue = 1)
 public class Role implements GrantedAuthority {
@@ -13,9 +18,10 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
     private Long id;
 
-    @Getter
-    @Setter
     private String nameRole;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<UsuarioRole> usuarioRoles;
 
     @Override
     public String getAuthority() {
