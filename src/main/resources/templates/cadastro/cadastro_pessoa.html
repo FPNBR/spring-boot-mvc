@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <th:block th:replace="~{head}"></th:block>
     <title>Cadastro de Pessoas</title>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col">
+            <div class="col" sec:authorize="hasAnyRole('ROLE_TECNICO', 'ROLE_CAIXA')">
                 <label for="idade" class="form-label">Idade</label>
                 <input name="idade" class="form-control" id="idade" type="number" min="0" required th:field="*{idade}">
             </div>
