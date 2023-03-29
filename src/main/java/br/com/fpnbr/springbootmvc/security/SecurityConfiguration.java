@@ -28,7 +28,10 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/cadastro-pessoa").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll() // Permite qualquer usuário
-                .and().logout() // Mapeia a URL de Logout e invalida o usuário autenticado
+                .loginPage("/login")
+                .defaultSuccessUrl("/cadastro-pessoa")
+                .failureUrl("/login?error=true")
+                .and().logout().logoutSuccessUrl("/login") // Mapeia a URL de Logout e invalida o usuário autenticado
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 
         return http.build();
