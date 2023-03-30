@@ -4,6 +4,11 @@
 <head>
     <title>Cadastro de Pessoas</title>
     <th:block th:insert="~{head}"></th:block>
+
+    <style>
+        .fieldset {padding:20px; border:3px solid #808cf8; background: #f6f8ff;}
+        .fieldset-bg {background-color: #fff;}
+    </style>
 </head>
 
 <body>
@@ -14,73 +19,92 @@
         <span class="error-message" th:text="${messageError}"></span>
     </div>
 
-    <form action="/salvar-pessoa" id="formPessoa" method="post" th:object="${pessoa}">
-        <div class="row mb-4">
-            <div class="col">
-                <label for="id" class="form-label">ID</label>
-                <input name="id" class="form-control" id="id" th:field="*{id}" readonly>
+    <fieldset class="fieldset fieldset-bg mb-5">
+        <legend>Cadastro de Pessoa</legend>
+        <form action="/salvar-pessoa" id="formPessoa" method="post" th:object="${pessoa}">
+            <div class="row mb-4">
+                <div class="col">
+                    <label for="id" class="form-label">ID</label>
+                    <input name="id" class="form-control" id="id" th:field="*{id}" readonly>
+                </div>
+                <div class="col">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input name="nome" class="form-control" id="nome" placeholder="Digite seu nome" required th:field="*{nome}">
+                </div>
+                <div class="col">
+                    <label for="sobrenome" class="form-label">Sobrenome</label>
+                    <input name="sobrenome" class="form-control" id="sobrenome" placeholder="Digite seu sobrenome" required th:field="*{sobrenome}">
+                </div>
+                <div class="col">
+                    <label for="idade" class="form-label">Idade</label>
+                    <input name="idade" class="form-control" id="idade" type="number" min="0" required th:field="*{idade}">
+                </div>
+                <div class="col">
+                    <label class="form-label">Sexo</label>
+                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{sexo}">
+                        <option value="" disabled selected>Selecione o sexo</option>
+                        <option value="MASCULINO" th:text="Masculino"></option>
+                        <option value="FEMININO" th:text="Feminino"></option>
+                    </select>
+                </div>
             </div>
-            <div class="col">
-                <label for="nome" class="form-label">Nome</label>
-                <input name="nome" class="form-control" id="nome" placeholder="Digite seu nome" required th:field="*{nome}">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="cep" class="form-label">CEP</label>
+                    <input name="cep" class="form-control" id="cep" placeholder="Digite o CEP" required
+                           th:field="*{cep}">
+                </div>
+                <div class="col">
+                    <label for="rua" class="form-label">Rua</label>
+                    <input name="cep" class="form-control" id="rua" required th:field="*{rua}">
+                </div>
+                <div class="col">
+                    <label for="bairro" class="form-label">Bairro</label>
+                    <input name="bairro" class="form-control" id="bairro" required th:field="*{bairro}">
+                </div>
+                <div class="col">
+                    <label for="cidade" class="form-label">Cidade</label>
+                    <input name="cidade" class="form-control" id="cidade" required th:field="*{cidade}">
+                </div>
+                <div class="col">
+                    <label for="uf" class="form-label">UF</label>
+                    <input name="uf" class="form-control" id="uf" required th:field="*{uf}">
+                </div>
             </div>
-            <div class="col">
-                <label for="sobrenome" class="form-label">Sobrenome</label>
-                <input name="sobrenome" class="form-control" id="sobrenome" placeholder="Digite seu sobrenome" required th:field="*{sobrenome}">
+            <div class="row mb-5">
+                <div class="col">
+                    <input type="submit" class="btn btn-success" value="Salvar">
+                    <button class="btn btn-primary" onclick="document.getElementById('formPessoa').reset">Novo</button>
+                </div>
             </div>
-            <div class="col">
-                <label for="idade" class="form-label">Idade</label>
-                <input name="idade" class="form-control" id="idade" type="number" min="0" required th:field="*{idade}">
-            </div>
-            <div class="col">
-                <label class="form-label">Sexo</label>
-                <select class="form-select" aria-label=".form-select-sm example" th:field="*{sexo}">
-                    <option value="" disabled selected>Selecione o sexo</option>
-                    <option value="MASCULINO" th:text="Masculino"></option>
-                    <option value="FEMININO" th:text="Feminino"></option>
-                </select>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label for="cep" class="form-label">CEP</label>
-                <input name="cep" class="form-control" id="cep" placeholder="Digite o CEP" required th:field="*{cep}">
-            </div>
-            <div class="col">
-                <label for="rua" class="form-label">Rua</label>
-                <input name="cep" class="form-control" id="rua" required th:field="*{rua}">
-            </div>
-            <div class="col">
-                <label for="bairro" class="form-label">Bairro</label>
-                <input name="bairro" class="form-control" id="bairro" required th:field="*{bairro}">
-            </div>
-            <div class="col">
-                <label for="cidade" class="form-label">Cidade</label>
-                <input name="cidade" class="form-control" id="cidade" required th:field="*{cidade}">
-            </div>
-            <div class="col">
-                <label for="uf" class="form-label">UF</label>
-                <input name="uf" class="form-control" id="uf" required th:field="*{uf}">
-            </div>
-        </div>
-        <div class="row mb-5">
-            <div class="col">
-                <input type="submit" class="btn btn-success" value="Salvar">
-                <button class="btn btn-primary" onclick="document.getElementById('formPessoa').reset">Novo</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </fieldset>
 
-    <form action="/buscar-pessoa-nome" method="post">
-        <div class="mb-3">
-            <label for="buscarPessoaNome" class="form-label">Pesquisar usuário por nome:</label>
-            <input name="buscarPessoaNome" class="form-control" id="buscarPessoaNome" placeholder="Digite um nome">
-        </div>
-        <div class="mb-5">
-            <input type="submit" class="btn btn-primary" value="Buscar">
-            <button class="btn btn-primary" href="/listar-pessoas">Listar Pessoas</button>
-        </div>
-    </form>
+    <fieldset class="fieldset fieldset-bg mb-5">
+        <legend>Campos de pesquisa</legend>
+        <form action="/buscar-pessoa-nome" method="post">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="buscarPessoaNome" class="form-label">Pesquisar usuário por nome</label>
+                    <input name="buscarPessoaNome" class="form-control" id="buscarPessoaNome" placeholder="Digite um nome">
+                </div>
+                <div class="col-md-6 align-self-end">
+                    <label for="buscarPessoaSexo">Sexo</label>
+                    <select class="form-select" aria-label=".form-select-sm example" name="buscarPessoaSexo" id="buscarPessoaSexo">
+                        <option value="">Todos</option>
+                        <option value="MASCULINO" th:text="Masculino"></option>
+                        <option value="FEMININO" th:text="Feminino"></option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="mb-5">
+                <input type="submit" class="btn btn-primary" value="Buscar">
+                <button class="btn btn-primary" href="/listar-pessoas">Listar Pessoas</button>
+            </div>
+        </form>
+    </fieldset>
 
     <div class="mb-3" style="max-height: 300px; overflow-y: scroll;">
         <table class="table table-striped table-hover table-bordered" style="font-size: 14px; color: #333; background-color: #fff;">
