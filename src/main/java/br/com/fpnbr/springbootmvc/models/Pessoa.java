@@ -9,8 +9,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -32,6 +31,16 @@ public class Pessoa implements Serializable {
     @NotNull(message = "A idade não pode ser nula!")
     @Min(value = 18, message = "Você deve ter mais de 18 anos para se cadastrar!")
     private int idade;
+
+    private String cep;
+
+    private String rua;
+
+    private String bairro;
+
+    private String cidade;
+
+    private String uf;
 
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefoneList;
