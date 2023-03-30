@@ -18,8 +18,8 @@ class SpringBootMvcApplicationTests {
 	@Test
 	public void salvar() {
 		Usuario usuario = new Usuario();
-		usuario.setLogin("teste3");
-		usuario.setSenha(bCryptPasswordEncoder.encode("teste3"));
+		usuario.setLogin("admin");
+		usuario.setSenha(bCryptPasswordEncoder.encode("admin"));
 		usuarioRepository.save(usuario);
 	}
 
