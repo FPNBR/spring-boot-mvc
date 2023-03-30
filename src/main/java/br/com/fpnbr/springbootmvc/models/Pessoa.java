@@ -43,5 +43,5 @@ public class Pessoa implements Serializable {
     private String uf;
 
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Telefone> telefoneList;
+    private List<Telefone> telefones;
 }

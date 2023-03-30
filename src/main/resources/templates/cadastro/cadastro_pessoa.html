@@ -17,6 +17,10 @@
     <form action="/salvar-pessoa" id="formPessoa" method="post" th:object="${pessoa}">
         <div class="row mb-4">
             <div class="col">
+                <label for="id" class="form-label">ID</label>
+                <input name="id" class="form-control" id="id" th:field="*{id}" readonly>
+            </div>
+            <div class="col">
                 <label for="nome" class="form-label">Nome</label>
                 <input name="nome" class="form-control" id="nome" placeholder="Digite seu nome" required th:field="*{nome}">
             </div>
