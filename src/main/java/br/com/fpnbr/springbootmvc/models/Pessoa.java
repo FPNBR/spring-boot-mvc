@@ -42,7 +42,9 @@ public class Pessoa implements Serializable {
 
     private String uf;
 
-    private String sexo;
+    private String sexopessoa;
+
+    private String ibge;
 
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones;

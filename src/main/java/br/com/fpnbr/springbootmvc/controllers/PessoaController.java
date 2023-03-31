@@ -119,8 +119,41 @@ public class PessoaController {
     }
 
     @GetMapping("/buscar-pessoa-nome")
-    public void gerarRelatorio(@RequestParam("buscarPessoaNome") String buscarPessoaNome, @RequestParam("buscarPessoaSexo") String buscarPessoaSexo, HttpServletRequest request, HttpServletResponse response) {
+    public void gerarRelatorio(@RequestParam("buscarPessoaNome") String buscarPessoaNome, @RequestParam("buscarPessoaSexo") String buscarPessoaSexo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<Pessoa> pessoas = new ArrayList<>();
 
+        if (buscarPessoaNome != null && !buscarPessoaNome.isEmpty() && buscarPessoaSexo != null && !buscarPessoaSexo.isEmpty()) {
+            pessoas = pessoaRepository.findPessoaByNameAndSexo(buscarPessoaNome, buscarPessoaSexo);
+
+        }else if (buscarPessoaNome != null && !buscarPessoaNome.isEmpty()) {
+            pessoas = pessoaRepository.findPessoaByName(buscarPessoaNome);
+
+        }else if (buscarPessoaSexo != null && !buscarPessoaSexo.isEmpty()) {
+            pessoas = pessoaRepository.findPessoaBySexo(buscarPessoaSexo);
+
+        }else {
+            Iterable<Pessoa> iterable = pessoaRepository.findAll();
+            for (Pessoa pessoa : iterable) {
+                pessoas.add(pessoa);
+            }
+        }
+
+        // Chamar o método para gerar o relatório
+        byte[] pdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
+
+        // Tamanho da resposta
+        response.setContentLength(pdf.length);
+
+        // Definir na resposta o tipo de arquivo
+        response.setContentType("application/octet-stream");
+
+        // Definir o cabeçalho da resposta
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", "relatorio.pdf");
+        response.setHeader(headerKey, headerValue);
+
+        // Finaliza a resposta
+        response.getOutputStream().write(pdf);
     }
 
     @GetMapping("/telefone-pessoa/{pessoaId}")

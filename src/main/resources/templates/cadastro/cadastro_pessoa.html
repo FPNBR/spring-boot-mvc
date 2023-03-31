@@ -41,7 +41,7 @@
                 </div>
                 <div class="col">
                     <label class="form-label">Sexo</label>
-                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{sexo}">
+                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{sexopessoa}">
                         <option value="" disabled selected>Selecione o sexo</option>
                         <option value="MASCULINO" th:text="Masculino"></option>
                         <option value="FEMININO" th:text="Feminino"></option>
@@ -69,6 +69,10 @@
                 <div class="col">
                     <label for="uf" class="form-label">UF</label>
                     <input name="uf" class="form-control" id="uf" required th:field="*{uf}">
+                </div>
+                <div class="col">
+                    <label for="ibge" class="form-label">IBGE</label>
+                    <input name="ibge" class="form-control" id="ibge" required th:field="*{ibge}">
                 </div>
             </div>
             <div class="row mb-5">
@@ -141,6 +145,7 @@
             $("#bairro").val("");
             $("#cidade").val("");
             $("#uf").val("");
+            $("#ibge").val("");
         }
 
         //Quando o campo cep perde o foco.
@@ -163,6 +168,7 @@
                     $("#bairro").val("...");
                     $("#cidade").val("...");
                     $("#uf").val("...");
+                    $("#ibge").val("...");
 
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
@@ -173,6 +179,7 @@
                             $("#bairro").val(dados.bairro);
                             $("#cidade").val(dados.localidade);
                             $("#uf").val(dados.uf);
+                            $("#ibge").val(dados.ibge);
                         } //end if.
                         else {
                             //CEP pesquisado não foi encontrado.
