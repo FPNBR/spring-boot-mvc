@@ -82,7 +82,7 @@
 
     <fieldset class="fieldset fieldset-bg mb-5">
         <legend>Campos de pesquisa</legend>
-        <form action="/buscar-pessoa-nome" method="post">
+        <form action="/buscar-pessoa-nome" id="buscar-pessoa-nome" method="post">
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="buscarPessoaNome" class="form-label">Pesquisar usuário por nome</label>
@@ -97,9 +97,8 @@
                     </select>
                 </div>
             </div>
-
-
             <div class="mb-5">
+                <input type="submit" class="btn btn-danger" value="PDF" onclick="document.getElementById('buscar-pessoa-nome').method = 'get'">
                 <input type="submit" class="btn btn-primary" value="Buscar">
                 <button class="btn btn-primary" href="/listar-pessoas">Listar Pessoas</button>
             </div>

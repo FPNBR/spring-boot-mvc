@@ -4,6 +4,9 @@ import br.com.fpnbr.springbootmvc.models.Pessoa;
 import br.com.fpnbr.springbootmvc.models.Telefone;
 import br.com.fpnbr.springbootmvc.repositories.PessoaRepository;
 import br.com.fpnbr.springbootmvc.repositories.TelefoneRepository;
+import br.com.fpnbr.springbootmvc.util.ReportUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,9 @@ public class PessoaController {
 
     @Autowired
     private TelefoneRepository telefoneRepository;
+
+    @Autowired
+    private ReportUtil reportUtil;
 
     @GetMapping( "/cadastro-pessoa")
     public ModelAndView inicio() {
@@ -110,6 +116,11 @@ public class PessoaController {
         modelAndView.addObject("pessoa", new Pessoa());
 
         return modelAndView;
+    }
+
+    @GetMapping("/buscar-pessoa-nome")
+    public void gerarRelatorio(@RequestParam("buscarPessoaNome") String buscarPessoaNome, @RequestParam("buscarPessoaSexo") String buscarPessoaSexo, HttpServletRequest request, HttpServletResponse response) {
+
     }
 
     @GetMapping("/telefone-pessoa/{pessoaId}")
