@@ -46,6 +46,9 @@ public class Pessoa implements Serializable {
 
     private String ibge;
 
+    @ManyToOne
+    private Profissao profissao;
+
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones;
 }

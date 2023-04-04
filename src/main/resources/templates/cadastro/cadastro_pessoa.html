@@ -47,6 +47,12 @@
                         <option value="FEMININO" th:text="Feminino"></option>
                     </select>
                 </div>
+                <div class="col">
+                    <label for="profissoes" class="form-label">Profissão</label>
+                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{profissao}" id="profissoes">
+                        <option th:each="p : ${profissoes}" th:value="${p.id}" th:text="${p.nome}"></option>
+                    </select>
+                </div>
             </div>
             <div class="row mb-3">
                 <div class="col">
@@ -78,7 +84,7 @@
             <div class="row mb-5">
                 <div class="col">
                     <input type="submit" class="btn btn-success" value="Salvar">
-                    <button class="btn btn-primary" onclick="document.getElementById('formPessoa').reset">Novo</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('formPessoa').reset()">Novo</button>
                 </div>
             </div>
         </form>

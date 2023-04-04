@@ -3,6 +3,7 @@ package br.com.fpnbr.springbootmvc.controllers;
 import br.com.fpnbr.springbootmvc.models.Pessoa;
 import br.com.fpnbr.springbootmvc.models.Telefone;
 import br.com.fpnbr.springbootmvc.repositories.PessoaRepository;
+import br.com.fpnbr.springbootmvc.repositories.ProfissaoRepository;
 import br.com.fpnbr.springbootmvc.repositories.TelefoneRepository;
 import br.com.fpnbr.springbootmvc.util.ReportUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,9 @@ public class PessoaController {
     private TelefoneRepository telefoneRepository;
 
     @Autowired
+    private ProfissaoRepository profissaoRepository;
+
+    @Autowired
     private ReportUtil reportUtil;
 
     @GetMapping( "/cadastro-pessoa")
@@ -36,6 +40,7 @@ public class PessoaController {
         modelAndView.addObject("pessoa", new Pessoa());
         Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
         modelAndView.addObject("pessoas", pessoaIterable);
+        modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
         return modelAndView;
     }
@@ -58,6 +63,7 @@ public class PessoaController {
             }
 
             modelAndView.addObject("messageErrors", messageErrors);
+            modelAndView.addObject("profissoes", profissaoRepository.findAll());
             return modelAndView;
 
         }else {
@@ -66,6 +72,7 @@ public class PessoaController {
             Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
             modelAndView.addObject("pessoas", pessoaIterable);
             modelAndView.addObject("pessoa", new Pessoa());
+            modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
             return modelAndView;
         }
@@ -86,6 +93,7 @@ public class PessoaController {
         Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
         modelAndView.addObject("pessoa", pessoa.get());
+        modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
         return modelAndView;
     }
