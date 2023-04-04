@@ -56,6 +56,16 @@
             </div>
             <div class="row mb-3">
                 <div class="col">
+                    <label for="senioridade" class="form-label">Senioridade</label>
+                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{senioridade}"
+                            id="senioridade">
+                        <option th:each="c : ${T(br.com.fpnbr.springbootmvc.models.Senioridade).values()}"
+                                th:value="${c}" th:text="${c.descricao}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
                     <label for="cep" class="form-label">CEP</label>
                     <input name="cep" class="form-control" id="cep" placeholder="Digite o CEP" required
                            th:field="*{cep}">

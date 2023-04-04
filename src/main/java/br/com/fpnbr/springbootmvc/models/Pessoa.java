@@ -49,6 +49,9 @@ public class Pessoa implements Serializable {
     @ManyToOne
     private Profissao profissao;
 
+    @Enumerated(EnumType.STRING)
+    private Senioridade senioridade;
+
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones;
 }
