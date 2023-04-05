@@ -9,6 +9,9 @@
         .fieldset {padding:20px; border:3px solid #808cf8; background: #f6f8ff;}
         .fieldset-bg {background-color: #fff;}
     </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.14/combined/js/gijgo.min.js" integrity="sha512-JsHMa3rSDTAy7MZCj1DWbL0YwAAysj23aWwCOTWKs3tlqO3ptwDhw3OHimYoeqryhTmSLFRn29C8qHK/oT/iZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.9.14/combined/css/gijgo.min.css" integrity="sha512-9aomOZ/zmsiod+U3sukisKwsGHSlhezpxtRx7LFNEdvqnnVi7/tKgAS0v4kbH0pqY1UNs4BgYwTkRUDtLWk5Kw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -54,14 +57,17 @@
                     </select>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-4 align-items-center">
                 <div class="col">
                     <label for="senioridade" class="form-label">Senioridade</label>
-                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{senioridade}"
-                            id="senioridade">
+                    <select class="form-select" aria-label=".form-select-sm example" th:field="*{senioridade}" id="senioridade">
                         <option th:each="c : ${T(br.com.fpnbr.springbootmvc.models.Senioridade).values()}"
                                 th:value="${c}" th:text="${c.descricao}"></option>
                     </select>
+                </div>
+                <div class="col">
+                    <label for="dataNascimento" class="form-label mt-2">Data de Nascimento</label>
+                    <input type="date" id="dataNascimento" th:field="*{dataNascimento}" name="dataNascimento">
                 </div>
             </div>
             <div class="row mb-3">
@@ -154,6 +160,11 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+
+        $('#dataNascimento').datepicker({
+            showOthermonths:true,
+            format: 'yyyy-mm-dd'
+        });
 
         function limpa_formulário_cep() {
             // Limpa valores do formulário de cep.
