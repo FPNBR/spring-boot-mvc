@@ -24,7 +24,7 @@
 
     <fieldset class="fieldset fieldset-bg mb-5">
         <legend>Cadastro de Pessoa</legend>
-        <form action="/salvar-pessoa" id="formPessoa" method="post" th:object="${pessoa}">
+        <form action="/salvar-pessoa" id="formPessoa" method="post" th:object="${pessoa}" enctype="multipart/form-data">
             <div class="row mb-4">
                 <div class="col">
                     <label for="id" class="form-label">ID</label>
@@ -68,6 +68,12 @@
                 <div class="col">
                     <label for="dataNascimento" class="form-label mt-2">Data de Nascimento</label>
                     <input type="date" id="dataNascimento" th:field="*{dataNascimento}" name="dataNascimento">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="curriculo" class="form-label">Currículo: </label>
+                    <input type="file" id="curriculo" name="file" class="form-control-file">
                 </div>
             </div>
             <div class="row mb-3">

@@ -14,8 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +50,8 @@ public class PessoaController {
         return modelAndView;
     }
 
-    @PostMapping("/salvar-pessoa")
-    public ModelAndView salvarPessoa(@Valid Pessoa pessoa, BindingResult bindingResult) {
+    @PostMapping(value = "/salvar-pessoa", consumes = {"multipart/form-data"})
+    public ModelAndView salvarPessoa(@Valid Pessoa pessoa, BindingResult bindingResult, final MultipartFile file) throws IOException {
 
         pessoa.setTelefones(telefoneRepository.findTelefoneByPessoa(pessoa.getId()));
 
@@ -67,6 +72,16 @@ public class PessoaController {
             return modelAndView;
 
         }else {
+            if (file.getSize() > 0) { // Cadastrando um currículo
+                pessoa.setCurriculo(file.getBytes());
+
+            }else {
+                if (pessoa.getId() != null && pessoa.getId() > 0) { // Não perder o currículo quando estiver editando o usuário existente
+                    byte[] curriculoTemp = pessoaRepository.findById(pessoa.getId()).get().getCurriculo();
+                    pessoa.setCurriculo(curriculoTemp);
+                }
+            }
+
             pessoaRepository.save(pessoa);
             ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
             Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
