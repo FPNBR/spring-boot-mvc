@@ -55,7 +55,7 @@ public class PessoaController {
 
         pessoa.setTelefones(telefoneRepository.findTelefoneByPessoa(pessoa.getId()));
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
             Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
             modelAndView.addObject("pessoas", pessoaIterable);
@@ -74,11 +74,15 @@ public class PessoaController {
         }else {
             if (file.getSize() > 0) { // Cadastrando um currículo
                 pessoa.setCurriculo(file.getBytes());
+                pessoa.setTipoArquivoCurriculo(file.getContentType());
+                pessoa.setNomeArquivoCurriculo(file.getOriginalFilename());
 
             }else {
                 if (pessoa.getId() != null && pessoa.getId() > 0) { // Não perder o currículo quando estiver editando o usuário existente
-                    byte[] curriculoTemp = pessoaRepository.findById(pessoa.getId()).get().getCurriculo();
-                    pessoa.setCurriculo(curriculoTemp);
+                    Pessoa pessoaTemp = pessoaRepository.findById(pessoa.getId()).get();
+                    pessoa.setCurriculo(pessoaTemp.getCurriculo());
+                    pessoa.setTipoArquivoCurriculo(pessoaTemp.getTipoArquivoCurriculo());
+                    pessoa.setNomeArquivoCurriculo(pessoaTemp.getNomeArquivoCurriculo());
                 }
             }
 

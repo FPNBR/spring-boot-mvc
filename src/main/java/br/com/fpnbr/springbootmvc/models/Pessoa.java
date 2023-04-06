@@ -61,6 +61,10 @@ public class Pessoa implements Serializable {
     @Lob
     private byte[] curriculo;
 
+    private String nomeArquivoCurriculo;
+
+    private String tipoArquivoCurriculo;
+
     @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones;
 }
