@@ -72,8 +72,8 @@
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <label for="curriculo" class="form-label">Currículo: </label>
-                    <input type="file" id="curriculo" name="file" class="form-control-file">
+                    <label for="curriculo" class="form-label">Currículo</label>
+                    <input class="form-control" type="file" name="file" id="curriculo">
                 </div>
             </div>
             <div class="row mb-3">
@@ -144,7 +144,7 @@
                 <th class="text-center">ID</th>
                 <th class="text-center">Nome</th>
                 <th class="text-center">Sobrenome</th>
-                <th class="text-center">Idade</th>
+                <th class="text-center">Currículo</th>
                 <th class="text-center">Opção 1</th>
                 <th class="text-center">Opção 2</th>
             </tr>
@@ -154,7 +154,7 @@
                 <td class="text-center" th:text="${pessoa.id}"></td>
                 <td class="text-center"><a th:href="@{/telefone-pessoa/{pessoaId}(pessoaId=${pessoa.id})}"><span th:text="${pessoa.nome}"></span></a></td>
                 <td class="text-center" th:text="${pessoa.sobrenome}"></td>
-                <td class="text-center" th:text="${pessoa.idade}"></td>
+                <td class="text-center"><a class="btn btn-warning" th:if="${pessoa.curriculo != null}" th:href="@{/baixar-curriculo/{pessoaId}(pessoaId=${pessoa.id})}">Currículo</a> <a th:if="${pessoa.curriculo == null}" style="color: red">Currículo não cadastrado</a></td>
                 <td class="text-center"><a class="btn btn-primary" th:href="@{/editar-pessoa/{pessoaId}(pessoaId=${pessoa.id})}">Editar</a></td>
                 <td class="text-center"><a class="btn btn-danger" th:href="@{/excluir-pessoa/{pessoaId}(pessoaId=${pessoa.id})}" onclick="return confirm('Tem certeza que deseja excluir essa pessoa?')">Excluir</a></td>
             </tr>
