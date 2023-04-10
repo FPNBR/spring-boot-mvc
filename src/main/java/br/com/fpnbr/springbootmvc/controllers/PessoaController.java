@@ -10,6 +10,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -43,8 +48,7 @@ public class PessoaController {
     public ModelAndView inicio() {
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
         modelAndView.addObject("pessoa", new Pessoa());
-        Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoaIterable);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
         modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
         return modelAndView;
@@ -57,8 +61,7 @@ public class PessoaController {
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
-            Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
-            modelAndView.addObject("pessoas", pessoaIterable);
+            modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
             modelAndView.addObject("pessoa", pessoa);
 
             List<String> messageErrors = new ArrayList<>();
@@ -88,8 +91,7 @@ public class PessoaController {
 
             pessoaRepository.save(pessoa);
             ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
-            Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
-            modelAndView.addObject("pessoas", pessoaIterable);
+            modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
             modelAndView.addObject("pessoa", new Pessoa());
             modelAndView.addObject("profissoes", profissaoRepository.findAll());
 
@@ -100,9 +102,19 @@ public class PessoaController {
     @GetMapping( "/listar-pessoas")
     public ModelAndView listarPessoas() {
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
-        Iterable<Pessoa> pessoaIterable = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoaIterable);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
         modelAndView.addObject("pessoa", new Pessoa());
+
+        return modelAndView;
+    }
+
+    @GetMapping( "/listar-pessoas-paginada")
+    public ModelAndView listarPessoasPaginada(@PageableDefault(size = 5) Pageable pageable, ModelAndView modelAndView, @RequestParam("buscarPessoaNome") String buscarPessoaNome) {
+        Page<Pessoa> pessoaPage = pessoaRepository.findPessoaByNamePage(buscarPessoaNome, pageable);
+        modelAndView.addObject("pessoas", pessoaPage);
+        modelAndView.addObject("pessoa", new Pessoa());
+        modelAndView.addObject("buscarPessoaNome", buscarPessoaNome);
+        modelAndView.setViewName("cadastro/cadastro_pessoa");
 
         return modelAndView;
     }
@@ -122,25 +134,36 @@ public class PessoaController {
         pessoaRepository.deleteById(pessoaId);
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
         modelAndView.addObject("pessoa", new Pessoa());
-        modelAndView.addObject("pessoas", pessoaRepository.findAll());
+        modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
 
         return modelAndView;
     }
 
     @PostMapping("/buscar-pessoa-nome")
-    public ModelAndView buscarPessoaNome(@RequestParam("buscarPessoaNome") String buscarPessoaNome, @RequestParam("buscarPessoaSexo") String buscarPessoaSexo) {
-        List<Pessoa> pessoas;
+    public ModelAndView buscarPessoaNome(@RequestParam(value = "buscarPessoaNome", required = false) String buscarPessoaNome,
+                                         @RequestParam(value = "buscarPessoaSexo", required = false) String buscarPessoaSexo,
+                                         @PageableDefault(size = 5, sort = {"nome"}) Pageable pageable) {
 
-        if (buscarPessoaSexo != null && !buscarPessoaSexo.isEmpty()) {
-            pessoas = pessoaRepository.findPessoaByNameAndSexo(buscarPessoaNome, buscarPessoaSexo);
+        Page<Pessoa> pessoas = null;
 
-        }else {
-            pessoas = pessoaRepository.findPessoaByName(buscarPessoaNome);
+        if (buscarPessoaNome == null || buscarPessoaNome.trim().isEmpty()) {
+            // Buscar todas as pessoas com o sexo informado
+            pessoas = pessoaRepository.findPessoaBySexoPage(buscarPessoaSexo, pageable);
+        } else {
+            if (buscarPessoaSexo != null && !buscarPessoaSexo.trim().isEmpty()) {
+                // Buscar todas as pessoas com o nome e o sexo informados
+                pessoas = pessoaRepository.findPessoaByNameAndSexoPage(buscarPessoaNome, buscarPessoaSexo, pageable);
+            } else {
+                // Buscar todas as pessoas com o nome informado
+                pessoas = pessoaRepository.findPessoaByNamePage(buscarPessoaNome, pageable);
+            }
         }
 
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastro_pessoa");
         modelAndView.addObject("pessoas", pessoas);
         modelAndView.addObject("pessoa", new Pessoa());
+        modelAndView.addObject("buscarPessoaNome", buscarPessoaNome);
+        modelAndView.addObject("buscarPessoaSexo", buscarPessoaSexo);
 
         return modelAndView;
     }

@@ -118,7 +118,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="buscarPessoaNome" class="form-label">Pesquisar usuário por nome</label>
-                    <input name="buscarPessoaNome" class="form-control" id="buscarPessoaNome" placeholder="Digite um nome">
+                    <input name="buscarPessoaNome" class="form-control" id="buscarPessoaNome" placeholder="Digite um nome" th:value="${buscarPessoaNome}">
                 </div>
                 <div class="col-md-6 align-self-end">
                     <label for="buscarPessoaSexo">Sexo</label>
@@ -150,7 +150,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="pessoa : ${pessoas}">
+            <tr th:each="pessoa : ${pessoas.content}">
                 <td class="text-center" th:text="${pessoa.id}"></td>
                 <td class="text-center"><a th:href="@{/telefone-pessoa/{pessoaId}(pessoaId=${pessoa.id})}"><span th:text="${pessoa.nome}"></span></a></td>
                 <td class="text-center" th:text="${pessoa.sobrenome}"></td>
@@ -160,6 +160,17 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div style="text-align: center">
+        <th:block th:if="${pessoas.totalPages > 1}">
+            <a th:if="${pessoas.number > 0}" th:href="@{/listar-pessoas-paginada(page=${pessoas.number - 1}, size=${pessoas.size}, buscarPessoaNome=${buscarPessoaNome}, buscarPessoaSexo=${buscarPessoaSexo})}">Anterior</a>
+
+            <th:block th:each="i: ${#numbers.sequence(0, pessoas.totalPages - 1)}">
+                <a th:class="${i == pessoas.number} ? active" th:href="@{/listar-pessoas-paginada(page=${i}, size=${pessoas.size}, buscarPessoaNome=${buscarPessoaNome}, buscarPessoaSexo=${buscarPessoaSexo})}">[[${i + 1}]]</a>
+            </th:block>
+
+            <a th:if="${pessoas.number + 1 < pessoas.totalPages}" th:href="@{/listar-pessoas-paginada(page=${pessoas.number + 1}, size=${pessoas.size}, buscarPessoaNome=${buscarPessoaNome}, buscarPessoaSexo=${buscarPessoaSexo})}">Próximo</a>
+        </th:block>
     </div>
 </div>
 
